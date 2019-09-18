@@ -26,9 +26,7 @@ namespace SyntacticAnalyzer
 
         private void buttonSplitWords_Click(object sender, EventArgs e)
         {
-            string[] words;
             string textContent1;
-            string pattern = @"\s+";
 
             textBoxContent2.Clear();
             dataGridViewWords.Rows.Clear();
