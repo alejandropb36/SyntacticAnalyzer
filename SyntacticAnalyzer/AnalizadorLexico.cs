@@ -299,6 +299,21 @@ namespace SyntacticAnalyzer
                                 agregarToken(Token.Tipo.While);
                                 i -= 1;
                             }
+                            else if (auxiliarLexico == "int")
+                            {
+                                agregarToken(Token.Tipo.Tipo);
+                                i -= 1;
+                            }
+                            else if (auxiliarLexico == "float")
+                            {
+                                agregarToken(Token.Tipo.Tipo);
+                                i -= 1;
+                            }
+                            else if (auxiliarLexico == "char")
+                            {
+                                agregarToken(Token.Tipo.Tipo);
+                                i -= 1;
+                            }
                             else
                             {
                                 agregarToken(Token.Tipo.Identificador);

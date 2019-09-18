@@ -11,6 +11,7 @@ namespace SyntacticAnalyzer
         public enum Tipo
         {
             Error = -1,
+            Tipo,
             Identificador,
             PuntoComa,
             Coma,
@@ -70,6 +71,8 @@ namespace SyntacticAnalyzer
                     return "Error";
                 case Tipo.Identificador:
                     return "Identificador";
+                case Tipo.Tipo:
+                    return "Tipo de dato";
                 case Tipo.PuntoComa:
                     return "Punto y coma";
                 case Tipo.Coma:
