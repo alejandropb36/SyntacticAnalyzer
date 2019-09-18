@@ -15,9 +15,11 @@ namespace SyntacticAnalyzer
     {
         AnalizadorLexico analizador;
         LinkedList<Token> tokens;
+        SyntacticAnalyzer syntacticAnalyzer;
 
         public MainForm()
         {
+            syntacticAnalyzer = new SyntacticAnalyzer();
             analizador = new AnalizadorLexico();
             InitializeComponent();
         }
