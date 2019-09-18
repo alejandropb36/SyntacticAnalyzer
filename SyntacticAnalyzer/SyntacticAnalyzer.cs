@@ -20,7 +20,7 @@ namespace SyntacticAnalyzer
             this.reglasId = new int[48, 2];
             loadTable();
             loadReglas();
-            loadReglasTokens();
+            loadReglasId();
         }
 
         private void loadTable()
