@@ -53,7 +53,7 @@ namespace SyntacticAnalyzer
             }
         }
 
-        private void loadReglasTokens()
+        private void loadReglasId()
         {
             string pattern = " ";
             string[] elementsLine;
