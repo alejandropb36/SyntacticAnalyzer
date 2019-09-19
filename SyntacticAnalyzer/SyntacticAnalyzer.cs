@@ -76,7 +76,31 @@ namespace SyntacticAnalyzer
 
         public void analyzer(LinkedList<Token> tokens)
         {
+            Stack<string> sintacticStack = new Stack<string>();
+            int columna = 0;
+            int fila = 0;
+            int aux = 0;
+            int regla = 0;
 
+            sintacticStack.Push("0");
+            foreach(Token token in tokens)
+            {
+                columna = int.Parse(sintacticStack.Peek());
+                fila = (int)token.TipoToken;
+                aux = table[fila, columna];
+
+                if(aux < 0)
+                {
+                    regla = reglaReduccion(aux);
+                    // Aqui va el caso en el que se tiene que eliminar
+
+                }
+                else
+                {
+                    sintacticStack.Push(token.GetTipoToken());
+                    sintacticStack.Push(aux.ToString());
+                }
+            }
         }
 
     }
