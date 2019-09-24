@@ -11,13 +11,15 @@ namespace SyntacticAnalyzer
     {
         int[,] table;
         string[,] reglas;
-        int[,] reglasId; 
+        int[,] reglasId;
+        Stack<int> syntacticStack;
 
         public SyntacticAnalyzer()
         {
             this.table = new int[93,43];
             this.reglas = new string[48, 2];
             this.reglasId = new int[48, 2];
+            syntacticStack = new Stack<int>();
             loadTable();
             loadReglas();
             loadReglasId();
@@ -68,39 +70,60 @@ namespace SyntacticAnalyzer
             }
         }
 
-        public int reglaReduccion(int numero)
+        public int getReglaReduccion(int numero)
         {
-            numero = (numero * -1) - 1;
-            return numero;
+            return (numero * -1) - 1;
         }
 
-        public void analyzer(LinkedList<Token> tokens)
+        public bool analyzer(LinkedList<Token> tokensList)
         {
-            Stack<string> sintacticStack = new Stack<string>();
             int columna = 0;
             int fila = 0;
-            int aux = 0;
+            int accion = 0;
             int regla = 0;
+            int reduccion = 0;
+            bool result = false;
+            Token[] tokens = tokensList.ToArray();
 
-            sintacticStack.Push("0");
-            foreach(Token token in tokens)
+            syntacticStack.Push(0);
+            for(int i = 0; i < tokens.Length; i++)
             {
-                columna = int.Parse(sintacticStack.Peek());
-                fila = (int)token.TipoToken;
-                aux = table[fila, columna];
+                columna = (int)tokens[i].TipoToken;
+                fila = syntacticStack.Peek();
+                accion = table[fila, columna];
 
-                if(aux < 0)
+                if(accion > 0)
                 {
-                    regla = reglaReduccion(aux);
-                    // Aqui va el caso en el que se tiene que eliminar
-
+                    syntacticStack.Push(columna);
+                    syntacticStack.Push(accion);
+                }
+                else if (accion == 0)
+                {
+                    result = false;
+                }
+                else if (accion == -1)
+                {
+                    result = true;
                 }
                 else
                 {
-                    sintacticStack.Push(token.GetTipoToken());
-                    sintacticStack.Push(aux.ToString());
+                    regla = getReglaReduccion(accion);
+                    reduccion = reglasId[regla, 1] * 2;
+                    while(reduccion > 0)
+                    {
+                        syntacticStack.Pop();
+                        reduccion--;
+                    }
+                    fila = syntacticStack.Peek();
+                    columna = reglasId[regla, 0];
+
+                    syntacticStack.Push(columna);
+                    syntacticStack.Push(table[fila, columna]);
+                    --i;
                 }
             }
+
+            return result;
         }
 
     }

@@ -36,6 +36,7 @@ namespace SyntacticAnalyzer
                 tokens = analizador.analizar(textContent1);
                 textBoxContent2.Text = textContent1;
                 printTokens(tokens);
+                MessageBox.Show("Compila = " + syntacticAnalyzer.analyzer(tokens).ToString());
             }
         }
 
