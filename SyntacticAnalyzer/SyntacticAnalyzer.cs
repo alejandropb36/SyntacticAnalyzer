@@ -16,12 +16,11 @@ namespace SyntacticAnalyzer
 
         public SyntacticAnalyzer()
         {
-            this.table = new int[93,43];
+            this.table = new int[93,48];
             this.reglas = new string[48, 2];
             this.reglasId = new int[48, 2];
             syntacticStack = new Stack<int>();
             loadTable();
-            loadReglas();
             loadReglasId();
         }
 
@@ -72,10 +71,10 @@ namespace SyntacticAnalyzer
 
         public int getReglaReduccion(int numero)
         {
-            return (numero * -1) - 1;
+            return (numero * -1)-1;
         }
 
-        public bool analyzer(LinkedList<Token> tokensList)
+        public bool analyzer(List<Token> tokens)
         {
             int columna = 0;
             int fila = 0;
@@ -83,12 +82,15 @@ namespace SyntacticAnalyzer
             int regla = 0;
             int reduccion = 0;
             bool result = false;
-            Token[] tokens = tokensList.ToArray();
 
             syntacticStack.Push(0);
-            for(int i = 0; i < tokens.Length; i++)
+            for(int i = 0; i < tokens.Count; i++)
             {
                 columna = (int)tokens[i].TipoToken;
+                if(columna == -1)
+                {
+                    return false;
+                }
                 fila = syntacticStack.Peek();
                 accion = table[fila, columna];
 
@@ -99,7 +101,7 @@ namespace SyntacticAnalyzer
                 }
                 else if (accion == 0)
                 {
-                    result = false;
+                    return false;
                 }
                 else if (accion == -1)
                 {
@@ -119,7 +121,7 @@ namespace SyntacticAnalyzer
 
                     syntacticStack.Push(columna);
                     syntacticStack.Push(table[fila, columna]);
-                    --i;
+                    i--;
                 }
             }
 
