@@ -12,14 +12,14 @@ namespace SyntacticAnalyzer
         int[,] table;
         string[,] reglas;
         int[,] reglasId;
-        Stack<int> syntacticStack;
+        Stack<Nodo> syntacticStack;
 
         public SyntacticAnalyzer()
         {
             this.table = new int[93,48];
             this.reglas = new string[48, 2];
             this.reglasId = new int[48, 2];
-            syntacticStack = new Stack<int>();
+            syntacticStack = new Stack<Nodo>();
             loadTable();
             loadReglasId();
         }
@@ -91,7 +91,7 @@ namespace SyntacticAnalyzer
                 {
                     return false;
                 }
-                fila = syntacticStack.Peek();
+                fila = syntacticStack.Peek().Estado;
                 accion = table[fila, columna];
 
                 if(accion > 0)
@@ -110,13 +110,15 @@ namespace SyntacticAnalyzer
                 else
                 {
                     regla = getReglaReduccion(accion);
+
+
                     reduccion = reglasId[regla, 1] * 2;
                     while(reduccion > 0)
                     {
                         syntacticStack.Pop();
                         reduccion--;
                     }
-                    fila = syntacticStack.Peek();
+                    fila = (int)syntacticStack.Peek();
                     columna = reglasId[regla, 0];
 
                     syntacticStack.Push(columna);
