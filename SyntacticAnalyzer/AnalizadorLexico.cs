@@ -9,14 +9,14 @@ namespace SyntacticAnalyzer
 {
     class AnalizadorLexico
     {
-        private List<Token> tokens;
+        private LinkedList<Token> tokens;
         private int estado;
         private String auxiliarLexico;
 
-        public List<Token> analizar(string entrada)
+        public LinkedList<Token> analizar(string entrada)
         {
             entrada = entrada + "$";
-            tokens = new List<Token>();
+            tokens = new LinkedList<Token>();
             estado = 0;
             auxiliarLexico = "";
             Char caracter;
@@ -356,7 +356,7 @@ namespace SyntacticAnalyzer
 
         public void agregarToken(Token.Tipo tipo)
         {
-            tokens.Add(new Token(tipo, auxiliarLexico));
+            tokens.AddLast(new Token(tipo, auxiliarLexico));
             auxiliarLexico = "";
             estado = 0;
         }

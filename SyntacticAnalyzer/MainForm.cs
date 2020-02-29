@@ -13,8 +13,8 @@ namespace SyntacticAnalyzer
 {
     public partial class MainForm : Form
     {
-        List<Token> tokens;
         AnalizadorLexico analizador;
+        LinkedList<Token> tokens;
         SyntacticAnalyzer syntacticAnalyzer;
 
         public MainForm()
@@ -40,7 +40,7 @@ namespace SyntacticAnalyzer
             }
         }
 
-        private void printTokens(List<Token> tokens)
+        private void printTokens(LinkedList<Token> tokens)
         {
             foreach (Token token in tokens)
             {

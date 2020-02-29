@@ -12,15 +12,16 @@ namespace SyntacticAnalyzer
         int[,] table;
         string[,] reglas;
         int[,] reglasId;
-        Stack<Nodo> syntacticStack;
+        Stack<int> syntacticStack;
 
         public SyntacticAnalyzer()
         {
-            this.table = new int[93,48];
+            this.table = new int[93,43];
             this.reglas = new string[48, 2];
             this.reglasId = new int[48, 2];
-            syntacticStack = new Stack<Nodo>();
+            syntacticStack = new Stack<int>();
             loadTable();
+            loadReglas();
             loadReglasId();
         }
 
@@ -71,10 +72,10 @@ namespace SyntacticAnalyzer
 
         public int getReglaReduccion(int numero)
         {
-            return (numero * -1)-1;
+            return (numero * -1) - 1;
         }
 
-        public bool analyzer(List<Token> tokens)
+        public bool analyzer(LinkedList<Token> tokensList)
         {
             int columna = 0;
             int fila = 0;
@@ -82,16 +83,13 @@ namespace SyntacticAnalyzer
             int regla = 0;
             int reduccion = 0;
             bool result = false;
+            Token[] tokens = tokensList.ToArray();
 
             syntacticStack.Push(0);
-            for(int i = 0; i < tokens.Count; i++)
+            for(int i = 0; i < tokens.Length; i++)
             {
                 columna = (int)tokens[i].TipoToken;
-                if(columna == -1)
-                {
-                    return false;
-                }
-                fila = syntacticStack.Peek().Estado;
+                fila = syntacticStack.Peek();
                 accion = table[fila, columna];
 
                 if(accion > 0)
@@ -101,7 +99,7 @@ namespace SyntacticAnalyzer
                 }
                 else if (accion == 0)
                 {
-                    return false;
+                    result = false;
                 }
                 else if (accion == -1)
                 {
@@ -110,20 +108,18 @@ namespace SyntacticAnalyzer
                 else
                 {
                     regla = getReglaReduccion(accion);
-
-
                     reduccion = reglasId[regla, 1] * 2;
                     while(reduccion > 0)
                     {
                         syntacticStack.Pop();
                         reduccion--;
                     }
-                    fila = (int)syntacticStack.Peek();
+                    fila = syntacticStack.Peek();
                     columna = reglasId[regla, 0];
 
                     syntacticStack.Push(columna);
                     syntacticStack.Push(table[fila, columna]);
-                    i--;
+                    --i;
                 }
             }
 
